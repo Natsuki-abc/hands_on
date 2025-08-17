@@ -2,7 +2,7 @@ name: Todo App CI/CD Pipeline
 
 on:
   push:
-    branches: [feature/todo-cicd]
+    branches: [main]
 
 jobs:
   build:
