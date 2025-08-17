@@ -7,5 +7,19 @@ Qiitaなどに投稿されている技術記事のハンズオンで作成した
 ## 一覧
 
 * Portfolio-agent
+* todo-cicd
 
 ## Portfolio-agent
+
+
+## todo-cicd
+
+### コマンド
+
+```
+起動
+npm run dev
+
+テスト実行
+npm run test
+```
