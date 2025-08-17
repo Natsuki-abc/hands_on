@@ -1,29 +1,13 @@
 import { useState } from "react";
 
-// type Todo = {
-//   id: number;
-//   title: string;
-//   completed: boolean;
-// };
+type Todo = {
+  id: number;
+  title: string;
+  completed: boolean;
+};
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: "Todo 1",
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "Todo 2",
-      completed: false,
-    },
-    {
-      id: 3,
-      title: "Todo 3",
-      completed: false,
-    }
-  ]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [title, setTitle] = useState("");
 
   const handleAddTodo = () => {
