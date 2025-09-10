@@ -1,41 +1,4 @@
-// 1. Reactで書く場合
-// function MyComponent() {
-//   return <h1 title="foo">Hello</h1>;
-// }
-// const container = document.getElementById('root');
-// ReactDOM.render(<MyComponent />, container);
-
-// 2. JSXがコンパイル(jsに変換)された状態（最初の3行のコンポーネント部分がReact.createElementに変換されている）
-// JSX：人間が分かりやすいコードの書き方
-// const element = React.createElement("h1", { title: "foo" }, "Hello");
-// const container = document.getElementById("root");
-// ReactDOM.render(element, container);
-
-// 3. 1の状態のコードをjsのみで書いた場合
-// createElementをすると下記(element)がreturnされる
-// const element = {
-//   type: "h1",
-//   props: {
-//     title: "foo",
-//     children: "Hello",
-//   },
-// };
-
-// const container = document.getElementById("root");
-
-// // renderっぽいものをjsで書くと下記のようになる
-// // render=DOMが作られる
-// const node = document.createElement(element.type);
-// node["title"] = element.props.title;
-
-// const text = document.createTextNode("");
-// text["nodeValue"] = element.props.children;
-
-// node.appendChild(text);
-// container.appendChild(node);
-
-
-// 4. createElementをjsで書いた場合
+// React.createElement, renderをReactっぽくjsで再実装した場合
 
 function createElement(type, props, ...children) {
   return {
@@ -49,31 +12,37 @@ function createElement(type, props, ...children) {
   }
 }
 
-// オブジェクトにすることによって、情報を追加することができるので、Reaceは全てをオブジェクトで管理したい、という考え方
-// JavaScript内では文字列や数値はオブジェクトではないため、そのままでは仮想DOM要素として扱えないため同じような形のオブジェクトにしてあげる
-
-// 普通のテキストをオブジェクトに変換する関数
 function createTextElement(text) {
   return {
     type: "TEXT_ELEMENT",
     props: {
       nodeValue: text,
-      children: [], // テキストノードはchildrenが無いというルールがある
+      children: [],
     },
   }
 }
 
-const element = createElement("h1", { title: "foo" }, "Hello");
+function render(element, container) {
+  const dom = element.type === "TEXT_ELEMENT"
+    ? document.createTextNode(element.props.nodeValue)
+    : document.createElement(element.type);
 
-const container = document.getElementById("root");
-const node = document.createElement(element.type);
-node["title"] = element.props.title;
+  Object.keys(element.props)
+    .filter(key => key !== "children")
+    .forEach(name => {
+      dom[name] = element.props[name];
+    });
 
-const text = document.createTextNode("");
-text["nodeValue"] = element.props.children;
+  element.props.children.forEach(child =>
+    render(child, dom)
+  );
 
-node.appendChild(text);
-container.appendChild(node);
+  container.appendChild(dom);
+}
 
+const MyReact = {
+  createElement,
+  render
+}
 
-// 5. renderをReactっぽくjsで書く場合
+export default MyReact;
