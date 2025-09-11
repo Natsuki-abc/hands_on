@@ -31,6 +31,7 @@ function performUnitOfWork_example(unitOfWork) {
 
   return { taskIndex: unitOfWork.taskIndex + 1 };
 }
+
 function workLoop_example(deadline) {
   let shouldYield = false;
   console.log(

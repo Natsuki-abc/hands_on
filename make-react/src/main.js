@@ -40,6 +40,24 @@ function render(element, container) {
   container.appendChild(dom);
 }
 
+let nextUnitOfWork = null;
+
+function workLoop(deadline) {
+  let shouldYield = false;
+
+  while (nextUnitOfWork && !shouldYield) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    shouldYield = deadline.timeRemaining() < 1;
+  }
+  requestAnimationFrame(workLoop);
+}
+
+function performUnitOfWork(nextUnitOfWork) {
+
+}
+
+requestIdleCallback(workLoop);
+
 const MyReact = {
   createElement,
   render
