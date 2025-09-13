@@ -37,17 +37,36 @@ function createDom(fiber) {
   return dom;
 }
 
+function commitRoot() {
+  commitWork(wipRoot.child);
+  wipRoot = null;
+}
+
+// 一気にdomを追加していくイメージ
+function commitWork(fiber) {
+  if (!fiber) {
+    return;
+  }
+
+  const domParent = fiber.parent.dom;
+  domParent.appendChild(fiber.dom);
+  commitWork(fiber.child);
+  commitWork(fiber.sibling);
+}
+
 function render(element, container) {
   // nextUnitOfWorkはfiberの構造になっている
-  nextUnitOfWork = {
+  wipRoot = {
     dom: container,
     props: {
       children: [element],
     }
-  }
+  };
+  nextUnitOfWork = wipRoot;
 }
 
 let nextUnitOfWork = null;
+let wipRoot = null;
 
 function workLoop(deadline) {
   let shouldYield = false;
@@ -57,15 +76,16 @@ function workLoop(deadline) {
     shouldYield = deadline.timeRemaining() < 1;
   }
   requestIdleCallback(workLoop);
+
+  if (!nextUnitOfWork && wipRoot) {
+    commitRoot();
+  }
 }
 
 function performUnitOfWork(fiber) {
   // 1. DOMを生成する
   if (!fiber.dom) {
     fiber.dom = createDom(fiber);
-  }
-  if (fiber.parent) {
-    fiber.parent.dom.appendChild(fiber.dom);
   }
 
   // 2. Fiberノードを作成する
