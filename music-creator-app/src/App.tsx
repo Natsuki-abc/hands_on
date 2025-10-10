@@ -1,12 +1,11 @@
-import './App.css'
+import "./App.css";
 
 function App() {
-
   return (
     <div>
-      <h1>Hello World</h1>
+      <h1 className="text-3xl font-bold underline">音楽生成アプリ</h1>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
