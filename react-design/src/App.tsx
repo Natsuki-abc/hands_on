@@ -1,12 +1,20 @@
 import React from "react";
 import "./App.css";
-import { useTaskList } from "./hooks/useTaskList";
+import { TaskProvider } from "./contexts/TaskProvider";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import { useTaskContext } from "./contexts/TaskContext";
 
 const App: React.FC = () => {
-  const { tasks, addTask, toggleTask, deleteTask } = useTaskList();
+  return (
+    <TaskProvider>
+      <MainContent />
+    </TaskProvider>
+  );
+};
 
+const MainContent: React.FC = () => {
+  const { tasks, addTask, toggleTask, deleteTask } = useTaskContext();
   return (
     <div className="app">
       <header className="app-header">
