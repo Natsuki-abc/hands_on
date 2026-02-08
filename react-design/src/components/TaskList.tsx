@@ -1,18 +1,14 @@
 import React from "react";
 import { FaCheck, FaTrash } from "react-icons/fa";
-import type { Task } from "../../domain/Task";
+import type { Task } from "../domain/Task";
 
-interface TaskListPresenterProps {
+interface TaskListProps {
   tasks: Task[];
   onToggleTask: (id: string) => void;
   onDeleteTask: (id: string) => void;
 }
 
-const TaskListPresenter: React.FC<TaskListPresenterProps> = ({
-  tasks,
-  onToggleTask,
-  onDeleteTask,
-}) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, onToggleTask, onDeleteTask }) => {
   if (tasks.length === 0) {
     return (
       <p className="empty-message">
@@ -38,9 +34,7 @@ const TaskListPresenter: React.FC<TaskListPresenterProps> = ({
             <button
               className="toggle-btn"
               onClick={() => onToggleTask(task.id)}
-              aria-label={
-                task.completed ? "タスクを未完了にする" : "タスクを完了する"
-              }
+              aria-label={task.completed ? "タスクを未完了にする" : "タスクを完了する"}
             >
               <FaCheck />
             </button>
@@ -58,4 +52,4 @@ const TaskListPresenter: React.FC<TaskListPresenterProps> = ({
   );
 };
 
-export default TaskListPresenter;
+export default TaskList;

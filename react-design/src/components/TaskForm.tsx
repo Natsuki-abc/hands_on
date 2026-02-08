@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import type { Task } from "../../domain/Task";
+import type { Task } from "../domain/Task";
 
-interface TaskFormPresenterProps {
+interface TaskFormProps {
   onAddTask: (title: string, priority: Task["priority"]) => void;
 }
 
-const TaskFormPresenter: React.FC<TaskFormPresenterProps> = ({ onAddTask }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState<Task["priority"]>("medium");
 
@@ -39,4 +39,4 @@ const TaskFormPresenter: React.FC<TaskFormPresenterProps> = ({ onAddTask }) => {
   );
 };
 
-export default TaskFormPresenter;
+export default TaskForm;
