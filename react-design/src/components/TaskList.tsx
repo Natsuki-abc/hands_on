@@ -1,6 +1,6 @@
 import React from "react";
-import { FaCheck, FaTrash } from "react-icons/fa";
 import type { Task } from "../domain/Task";
+import { TaskCard } from "./TaskCard/TaskCard";
 
 interface TaskListProps {
   tasks: Task[];
@@ -8,7 +8,11 @@ interface TaskListProps {
   onDeleteTask: (id: string) => void;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, onToggleTask, onDeleteTask }) => {
+const TaskList: React.FC<TaskListProps> = ({
+  tasks,
+  onToggleTask,
+  onDeleteTask,
+}) => {
   if (tasks.length === 0) {
     return (
       <p className="empty-message">
@@ -22,30 +26,13 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onToggleTask, onDeleteTask }
       {tasks.map((task) => (
         <li
           key={task.id}
-          className={`task-item ${task.completed ? "completed" : ""}`}
+          className={`task-item${task.completed ? " completed" : ""}`}
         >
-          <div>
-            <span className={`task-priority priority-${task.priority}`}>
-              {task.priority}
-            </span>
-            <span className="task-title">{task.title}</span>
-          </div>
-          <div className="task-actions">
-            <button
-              className="toggle-btn"
-              onClick={() => onToggleTask(task.id)}
-              aria-label={task.completed ? "タスクを未完了にする" : "タスクを完了する"}
-            >
-              <FaCheck />
-            </button>
-            <button
-              className="delete-btn"
-              onClick={() => onDeleteTask(task.id)}
-              aria-label="タスクを削除"
-            >
-              <FaTrash />
-            </button>
-          </div>
+          <TaskCard task={task} onToggle={onToggleTask} onDelete={onDeleteTask}>
+            <TaskCard.Priority />
+            <TaskCard.Title />
+            <TaskCard.Actions />
+          </TaskCard>
         </li>
       ))}
     </ul>
